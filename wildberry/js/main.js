@@ -230,3 +230,33 @@ navigationLink.forEach(function (link) {
     filterCards(field, value);
   });
 });
+
+
+const modalForm = document.querySelector(".modal-form");
+
+const postData = dataUser => fetch('server.php',{
+    method: 'POST',
+    body: dataUser,
+
+});
+ modalForm.addEventListener('submit', event=>{
+event.preventDefault();
+const formData =new FormData(modalForm);
+formData.append('cart', JSON.stringify(cart.cartGoods));
+postData(formData)
+.then(response=>{
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+  alert('ваш заказ готов');
+})
+.catch(error=>{
+  alert('к сожалению произошла ошибка');
+})
+.finally(()=>{
+closeModal();
+modalForm.reset();
+cart.cartGoods.length =0;
+});
+
+ });
